@@ -1,0 +1,22 @@
+{
+    "name": "John Doe",
+    "age": 30,
+    "email": "johndoe@example.com",
+    "testJson": "I can read Json file successfully ",
+    "address": {
+        "street": "123 Main St",
+        "city": "New York",
+        "state": "NY",
+        "postal_code": "12345"
+    },
+    "phone_numbers": [
+        "555-1234",
+        "555-5678"
+    ],
+    "is_employed": true,
+    "languages": [
+        "English",
+        "Spanish",
+        "French"
+    ]
+}

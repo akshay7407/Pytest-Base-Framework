@@ -1,0 +1,15 @@
+{
+    "id": 123456,
+    "title": "Sample JSON",
+    "author": {
+        "name": "Jane Smith",
+        "email": "janesmith@example.com"
+    },
+    "tags": [
+        "json",
+        "sample",
+        "data"
+    ],
+    "published": true,
+    "content": "This is a sample JSON document."
+}

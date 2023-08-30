@@ -1,0 +1,49 @@
+Input Forms:
+  Simple Form Demo:
+      - Test 1
+      - Test 2
+  Checkbox Demo:
+      - Radio Buttons Demo
+      - Select Dropdown List
+      - Input Form Submit
+      - Ajax Form Submit
+      - JQuery Select dropdown
+
+Date pickers:
+  - Bootstrap Date Picker
+  - JQuery Date Picker
+  - My Date Picker
+
+Table:
+  - Table Pagination
+  - Table Data Search
+  - Table Filter
+  - Table Sort & Search
+  - Table Data Download
+
+Progress Bars:
+  - JQuery Download Progress bars
+  - Bootstrap Progress bar
+  - Drag & Drop Sliders
+
+Alerts & Modals:
+  - Bootstrap Alerts
+  - Bootstrap Modals
+  - Window Popup Modal
+  - Progress Bar Modal
+  - Javascript Alerts
+  - File Download
+
+List Box:
+  - Bootstrap List Box
+  - JQuery List Box
+  - Data List Filter
+
+Others:
+  - Drag and Drop
+  - Dynamic Data Loading
+  - Charts Demo
+
+CHECKBOX_SUCCESS_MESSAGE: Success - Check box is checked
+RADIO_BUTTON_SUCCESS_MESSAGE: Radio button 'Male' is checked
+GROUP_RADIO_BUTTON_SUCCESS_MESSAGE: "Sex : Male'\n'Age group: 5 - 15"

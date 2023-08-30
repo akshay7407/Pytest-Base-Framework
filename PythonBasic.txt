@@ -1,0 +1,227 @@
+
+Installing Python and Selenium
+
+Installing Python:
+
+Windows : http://python.org/download/.
+
+• Make sure you note Python Installation path in your machine.
+It would be like below
+logged in
+• Set Python home in System Variables
+• Check if Python is Successfully Installed
+python --version
+
+==========================================================================================================
+Python Basic 
+Class name
+The class name should start with “Test”
+
+File name
+File name in the suite should start or end with “test”. So the wildcard for this name is “test_*.py” or “*_test.py”
+
+Method or function name
+Every function and method that is supposed to test something should have a name that starts with “test”
+
+Example of the suite is:
+
+test_for_login/
+	test_signup.py
+	login_test.py
+
+test_for_checkout/
+	test_cart.py
+	test_form.py
+	
+===============================================================================================================================	
+What is PIP?
+pip is the standard package manager for Python. It allows you to install and
+manage additional packages that are not part of the Python standard library.
+Java -
+Selenium installing instructions official link
+https://pypi.org/project/selenium/
+• pip install selenium
+
+• How to Verify if Package is installed
+pip show <packageName»
+
+4.pip install -U selenium
+The optional –U flag will upgrade the existing version of the installed package
+
+=====================================================================================================
+run the test case from the cmd
+pytest -vs testCases\test_login.py -p no:logging
+
+pytest -vs --alluredir=allure-report/  testCases\*.py -p no:logging 
+for the run the test case with the log
+pytest -p no:logging
+
+
+run the test cases in the parellal
+install the pakage name ----pytest-xdist:run test cases in the parell mode.
+
+pytest -vs -n=2 testCases\test_login.py -p no:logging
+here n=2 for the number of the test cases for the run
+
+To run specific test case use -k flag
+e.g py.test -k testCaseName 
+
+To run specifig mark test cases use -m as mark and -s for logs
+py.test -m smoke 
+
+To Skip test case 
+@pytest.mark.skip
+
+To generate HTML report in CMD 
+py.test test.py --html=report.html
+
+
+# Any pytest file should start with test_ or end with _test
+#pytest method names should start with test
+#Any code should be wrapped in method only
+#Method name should have sense
+# -k stands for method names execution, -s logs in out put  -v stands for more info metadata
+#you can run specific file with py.test <filename>
+# you can mark (tag) tests @pytest.mark.smoke and then run with -m
+#you can skip tests with @pytest.mark.skip
+#@pytest.mark.xfail
+#fixtures are used as setup and tear down methods for test cases- conftest file to generalize fixt
+#fixture and make it available to all test cases (fixture name into parameters of method)
+# datadriven and parameterization can be done with return statements in tuple format
+#when you define fixture scope to class only, it will run once before class is initiated and at the end
+
+
+
+@staticmethod is used to call method from  anytwhere using classname
+class testExcel
+  @staticmethod
+    def getTestData(test_case_name):
+        Dict = {}
+        book = openpyxl.load_workbook("D:\\PythonSelFramework\\PythonExcel.xlsx")
+        sheet = book.active
+        for i in range(1, sheet.max_row + 1):  # to get rows
+            if sheet.cell(row=i, column=1).value == "testcase1":
+                for j in range(1, sheet.max_column + 1):
+                    # print(sheet.cell(row=i, column=j).value)
+                    # store excel data into dict variable in json format
+                    Dict[sheet.cell(row=1, column=j).value] = sheet.cell(row=i, column=j).value
+        return[Dict]
+	
+to call it in method :
+   testExcel.getTestData("testcase1")	
+
+====================================================================================================
+            genration of the python report 
+step 1- pip install allure-pytest
+step 2=allure generate
+step 3=pytest --alluredir=allure-report/     ---------------->this genrated the one folder as allure report in working dir.
+step 4=allure serve allure-report/               ----------------->this is publish the report to local server.
+
+
+=============================================================================================================================
+
+Selenium - webdriver methods in pytest :
+
+1. `get(url)`: Loads a web page specified by the given URL.
+2. `current_url`: Returns the URL of the current web page.
+3. `title`: Returns the title of the current web page.
+4. `find_element(by, value)`: Finds and returns a web element based on the specified locator strategy (e.g., "id", "name", "xpath", "css_selector") and value.
+5. `find_elements(by, value)`: Finds and returns a list of web elements based on the specified locator strategy and value.
+6. `send_keys(*value)`: Simulates typing into a web element or a text field.
+7. `click()`: Clicks on a web element.
+8. `clear()`: Clears the contents of a text field or an input element.
+9. `submit()`: Submits a form element.
+10. `get_attribute(name)`: Retrieves the value of the specified attribute of a web element.
+11. `text`: Retrieves the visible text of a web element.
+12. `is_displayed()`: Checks if a web element is visible on the web page.
+13. `is_enabled()`: Checks if a web element is enabled.
+14. `is_selected()`: Checks if a web element is selected (e.g., checkbox, radio button).
+15. `get_cookies()`: Returns all cookies of the current session.
+16. `add_cookie(cookie_dict)`: Adds a cookie to the current session.
+17. `delete_cookie(name)`: Deletes a cookie by name.
+18. `delete_all_cookies()`: Deletes all cookies of the current session.
+19. `execute_script(script, *args)`: Executes JavaScript code on the current web page.
+20. `switch_to.frame(frame_reference)`: Switches the focus to the specified frame on the web page.
+21. `switch_to.default_content()`: Switches the focus back to the default content (main frame) from a nested frame.
+22. `switch_to.parent_frame()`: Switches the focus to the parent frame from a nested frame.
+23. `switch_to.alert`: Switches the focus to an alert dialog.
+24. `switch_to.window(window_name)`: Switches the focus to a different browser window or tab.
+25. `back()`: Navigates back to the previous page.
+26. `forward()`: Navigates forward to the next page.
+27. `refresh()`: Refreshes the current page.
+28. `close()`: Closes the current window or tab.
+29. `quit()`: Quits the WebDriver instance and closes all windows or tabs.
+30. `maximize_window()`: Maximizes the current window.
+31. `set_window_size(width, height)`: Sets the size of the current window.
+32. `get_screenshot_as_file(filename)`: Takes a screenshot and saves it to the specified file.
+33. `get_screenshot_as_png()`: Takes a screenshot and returns it as a PNG image.
+34. `get_screenshot_as_base64()`: Takes a screenshot and returns it as a base64 encoded string.
+35. `page_source`: Returns the source code of the current web page.
+
+These methods cover a wide range of actions and interactions with web elements and the browser. Remember to import the necessary modules and instantiate the WebDriver object before using these methods in your pytest-selenium tests.
+
+
+
+Access Modifiers:
+Python doesn't have strict access modifiers like some other languages (e.g., public, private, protected). However, it uses naming conventions to indicate the visibility of attributes and methods.
+
+Public: No special symbol. Accessible from anywhere.
+Protected: Use a single underscore _ prefix. Suggests that an attribute or method should not be accessed directly from outside the class, but it's not enforced.
+Private: Use a double underscore __ prefix. The attribute or method name gets name-mangled to include the class name, making it more difficult to accidentally override in subclasses.
+
+class MyClass:
+    def __init__(self):
+        self.public_var = 10       # Public attribute
+        self._protected_var = 20   # Protected attribute
+        self.__private_var = 30    # Private attribute
+
+    def public_method(self):
+        pass  # Public method
+
+    def _protected_method(self):
+        pass  # Protected method
+
+    def __private_method(self):
+        pass  # Private method
+
+Abstraction : 
+
+Abstract Base Classes (ABCs):
+Python provides a module named abc which allows you to create abstract base classes. These classes can have abstract methods that must be overridden by subclasses.
+
+In this example, the Shape class is defined as an abstract base class using the ABC metaclass. The @abstractmethod decorator ensures that any concrete subclass of Shape must implement the area() method.
+
+from abc import ABC, abstractmethod
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self):
+        pass
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+        
+    def area(self):
+        return 3.14 * self.radius ** 2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

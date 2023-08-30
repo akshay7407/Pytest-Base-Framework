@@ -29,14 +29,3 @@ def read_yaml(key):
         data = yaml.load(f, Loader=SafeLoader)
 
     return data[key]
-
-def read_multiple_json_files():
-    data = []
-    path = "../data"
-    for filename in os.listdir(path):
-        if filename.endswith('.json'):
-            file_path = os.path.join(path, filename)
-            with open(file_path) as file:
-                json_data = json.load(file)
-                data.append(json_data)
-    return data

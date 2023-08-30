@@ -1,4 +1,8 @@
 {
+    "credential": {
+        "username": "Admin",
+        "password": "admin123"
+    },
     "name": "John Doe",
     "age": 30,
     "email": "johndoe@example.com",

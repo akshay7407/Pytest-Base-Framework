@@ -7,7 +7,7 @@ class HrmHomePage(BasePage):
     
      def __init__(self, driver):
         super().__init__(driver)
-        # self.driver = driver
+        self.driver = driver
     
      allSidebarLinks =  "//a[@class='oxd-main-menu-item']/descendant::span"
      txtLeaveList = "//h5[text()='Leave List']"

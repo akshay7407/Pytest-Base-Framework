@@ -17,27 +17,101 @@ class BasePage:
         """
         method for explicit wait for an element
         """
-        locator_type = locator_type.lower()
+      
         element = None
         wait = WebDriverWait(self.driver, 20)
         try:
-            element = wait.until(EC.element_to_be_clickable((By.XPATH, locator_value)))
+            element = wait.until(EC.element_to_be_clickable((getattr(By,locator_type), locator_value)))
             return element
         except Exception as e:
-            print("Element not found with given locator type:", e)
+            self.log.info("Element not found with given locator type:", e)
         return element
-
+    
     def get_element(self, locator_value, locator_type="XPATH"):
         """
         method to get element on the page
         """
         element = None
         try:
-            locator_type = locator_type.lower()
             element = self.wait_for_element(locator_value, locator_type)
         except Exception as e:
             self.log.info(f"Element not found with given value {locator_value} ", e)
-            self.take_screenshot(locator_type)
+            assert False
+        return element
+    
+    def wait_for_elements(self, locator_value, locator_type='XPATH'):
+        """
+        method for  wait for an elements
+        """
+        element = None
+        wait = WebDriverWait(self.driver, 20)
+        try:
+            element = wait.until(EC.visibility_of_all_elements_located((getattr(By,locator_type), locator_value)))
+            return element
+        except Exception as e:
+            self.log.info("Element not found with given locator type:", e)
+            pass
+        return element
+    
+    def check_elements_presence(self, locator_value, locator_type="XPATH"):
+        """
+        method to check if at least one element with the given locator type and value is present
+        """
+        elements = None
+        try:
+            elements = self.wait_for_elements(locator_value, locator_type)
+            if len(elements) > 0:
+                return True
+            else:
+                return False
+        except Exception as e:
+            return False
+        
+    def scroll_into_view(self, locator_value, locator_type="XPATH"):
+        """
+        method to scroll an element into view using JavaScript executor
+        """
+        element = self.get_element(locator_value, locator_type)
+        if element:
+            self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
+        else:
+            self.log.info(f"Cannot scroll into view for element with value {locator_value} and type {locator_type}") 
+
+    def get_element_text_using_js(self, locator_value, locator_type="XPATH"):
+        """
+        method to get the text of an element using JavaScript
+        """
+        element = self.get_element(locator_value, locator_type)
+        if element:
+            return self.driver.execute_script("return arguments[0].textContent;", element)
+        else:
+            self.log.info(f"Cannot get text for element with value {locator_value} and type {locator_type}")
+            return None           
+    
+    
+    def get_element_attribute(self, locator_value, locator_type="XPATH", attribute_name=""):
+        """
+        method to get an attribute from an element
+        """
+        element = self.get_element(locator_value, locator_type)
+        if element:
+            if attribute_name:
+                return element.get_attribute(attribute_name)
+            else:
+                print("Attribute name not provided.")
+        else:
+            print(f"Cannot retrieve attribute from element with value {locator_value} and type {locator_type}")
+        return None
+    
+    def get_elements(self, locator_value, locator_type="XPATH"):
+        """
+        method to get elements on the page
+        """
+        element = None
+        try:
+            element = self.wait_for_elements(locator_value, locator_type)
+        except Exception as e:
+            self.log.info(f"Element not found with given value {locator_value} ", e)
             assert False
         return element
 
@@ -47,13 +121,11 @@ class BasePage:
         """
         element = None
         try:
-            locator_type = locator_type.lower()
             element = self.get_element(locator_value, locator_type)
             element.click()
             self.log.info(f"Clicked on  element with given value {locator_value}")
         except Exception as e:
             self.log.info(f"Element cannot be clicked at: {locator_value} ", e)
-            self.take_screenshot(locator_type)
             assert False
 
     def send_text(self, text, locator_value, locator_type="XPATH"):
@@ -62,7 +134,7 @@ class BasePage:
         """
         element = None
         try:
-            locator_type = locator_type.lower()
+          
             element = self.get_element(locator_value, locator_type)
             element.click()
             element.clear() 
@@ -70,7 +142,6 @@ class BasePage:
             self.log.info(f"Send text to element with given value {locator_value}")
         except Exception as e:
             self.log.info(f"Unable to send text to element with given value {locator_value} ", e)
-            self.take_screenshot(locator_type)
             assert False
 
     def is_element_displayed(self, locator_value, locator_type="XPATH"):
@@ -79,14 +150,13 @@ class BasePage:
         """
         element = None
         try:
-            locator_type = locator_type.lower()
+          
             element = self.get_element(locator_value, locator_type)
             element.is_displayed()
             self.log.info(f"Displayed Element with given value {locator_value}")
             return True
         except Exception as e:
             self.log.info(f"Element with locator value: {locator_value} is not displayed. ", e)
-            self.take_screenshot(locator_type)
             return False
 
     def is_element_enabled(self, locator_value, locator_type="XPATH"):
@@ -95,31 +165,45 @@ class BasePage:
         """
         element = None
         try:
-            locator_type = locator_type.lower()
+          
             element = self.get_element(locator_value, locator_type)
             element.is_enabled()
             return True
         except Exception as e:
             self.log.info(f"Element with locator value: {locator_value} is not enabled. ", e)
-            self.take_screenshot(locator_type)
             return False
-
-    def take_screenshot(self, text):
+        
+    def is_element_selected(self, locator_value, locator_type="XPATH"):
         """
-        method to take screenshots for allure report
+        method to check if an element is selected
         """
-        allure.attach(self.driver.get_screenshot_as_png(), name=text, attachment_type=AttachmentType.PNG)
+        element = self.get_element(locator_value, locator_type)
+        if element:
+            return element.is_selected()
+        else:
+            self.log.info(f"Cannot determine if element with value {locator_value} and type {locator_type} is selected.")
+            return False    
+        
+    def scroll_to_element(self, locator_value, locator_type="XPATH"):
+        """
+        method to scroll to an element using ActionChains
+        """
+        element = self.get_element(locator_value, locator_type)
+        if element:
+            actions = ActionChains(self.driver)
+            actions.move_to_element(element).perform()
+        else:
+            self.log.info(f"Cannot scroll to element with value {locator_value} and type {locator_type}")    
 
     def get_element_text(self, locator_value, locator_type="XPATH"):
         """
         Method for get element text
         """
         try:
-            locator_type = locator_type.lower()
+          
             element = self.wait_for_element(locator_value, locator_type)
         except Exception as e:
             self.log.info(f"Element not found with given value {locator_value}", e)
-            self.take_screenshot(locator_type)
             assert False
         return element.text
 
@@ -133,12 +217,11 @@ class BasePage:
         element = None
         wait = WebDriverWait(self.driver, 10)
         try:
-            locator_type = locator_type.lower()
+          
             element = self.driver.find_element_by_xpath(locator_value)
             attribute_value = element.get_attribute(attribute_name)
         except Exception as e:
             self.log.info(f"Element not found with given value {locator_value} ", e)
-            self.take_screenshot(locator_type)
             assert False
         return attribute_value
     

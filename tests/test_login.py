@@ -39,7 +39,6 @@ class TestLogin(TestBase):
      
      
     def test_fillInfoForm(self):
-         driver=self.driver 
          homePage_Obj= self.orangeHrm_obj.loginToHomePage(self.read_json['credential'])
          homePage_Obj.getSideBarElements("My Info")
          self.myInfoPage_obj.enter_user_info(read_properties('MONTH'),read_properties('YEAR'),read_properties('DAY'))

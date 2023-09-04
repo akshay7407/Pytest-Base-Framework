@@ -27,6 +27,7 @@ class MyInfoPage(BasePage):
     ddValue="//span[text()='{value}']/.."
     popUpmsg ="//p[text()='Successfully Updated']"
     btnSave ="(//button[@type='submit'])[1]"
+    test_locator = "oxd-calendar-selector"
    
     
     
@@ -49,9 +50,8 @@ class MyInfoPage(BasePage):
         assert self.is_element_displayed(self.popUpmsg) == True
     
     def select_calendar_dropdownValues(self , value):
-        dropdown_locator = (By.CLASS_NAME, "oxd-calendar-selector")
-        dropdown_element = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(dropdown_locator))
-        dropdown_element.click()
+        self.click_element(self.test_locator,locator_type="CLASS_NAME")
+        # select the first locator from li elements
         option_locator = (By.XPATH, f"{self.months_locator[1]}[text()='{value}']")
         option_element = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(option_locator))
         option_element.click()

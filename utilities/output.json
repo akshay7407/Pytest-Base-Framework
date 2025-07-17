@@ -1,0 +1,46 @@
+{
+    "Event": [
+        {
+            "TC_ID": 1,
+            "EventId": 1,
+            "Event Name": "registration"
+        },
+        {
+            "TC_ID": 2,
+            "EventId": 2,
+            "Event Name": "defination"
+        }
+    ],
+    "EventState": [
+        {
+            "TC_ID": 1,
+            "EventstateId": 4,
+            "EventStateName": "core"
+        },
+        {
+            "TC_ID": 2,
+            "EventstateId": 5,
+            "EventStateName": "demo"
+        }
+    ],
+    "Model Master": [
+        {
+            "TC_ID": 1,
+            "ModelId": 1,
+            "Name ": "credit",
+            "Type": "card"
+        },
+        {
+            "TC_ID": 2,
+            "ModelId": 2,
+            "Name ": "debit",
+            "Type": "card"
+        },
+        {
+            "TC_ID": 3,
+            "ModelId": 3,
+            "Name ": "paypal",
+            "Type": "UPI"
+        }
+    ]
+}

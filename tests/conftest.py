@@ -7,6 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.chrome.service import Service
 
 
 driver = None
@@ -15,7 +16,7 @@ environment =None
 # from utilities import read_properties as cp
 
 
-@pytest.fixture(scope='function', autouse ="true")
+@pytest.fixture(scope='function',autouse ="true")
 def before_method(base_url ,request):
     global  driver 
     browser_name = request.config.getoption("--browser_name")
@@ -23,9 +24,9 @@ def before_method(base_url ,request):
     driver_path = os.path.join(os.getcwd(),"chromedriver.exe")
     if browser_name == "chrome":
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument("--start-maximized") 
-        # Set up Chrome WebDriver with version 116 and the specified options
-        driver = webdriver.Chrome(executable_path=driver_path, options=chrome_options)
+        chrome_options.add_argument("--start-maximized")
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=chrome_options)
     elif browser_name == "firefox":
         driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
     elif browser_name == "IE":
@@ -46,7 +47,7 @@ def mock_fixture():
     print("Mock")
 
 def pytest_addoption(parser):
-    parser.addoption("--browser_name", default="chrome", help="browser name")
+    parser.addoption("--browser_name", default="firefox", help="browser name")
     parser.addoption( "--environment",action="store", default="dev",  help="Specify the test environment (dev, staging, production)."
     )
 
@@ -85,7 +86,7 @@ def pytest_runtest_makereport(item):
             index =file_name.index("test_")
             file_name = file_name[index:]
             file_path = "./reports/"+file_name
-            take_screenshot(file_path)
+            # take_screenshot(file_path)
             if file_name:
                 html = '<div><img src="%s" alt="screenshot" style="width:304px;height:228px;" ' \
                        'onclick="window.open(this.src)" align="right"/></div>' % file_name

@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
+import pyodbc
 
 class BasePage:
     log = cl.custom_logger()
@@ -24,7 +25,7 @@ class BasePage:
             element = wait.until(EC.element_to_be_clickable((getattr(By,locator_type), locator_value)))
             return element
         except Exception as e:
-            self.log.info("Element not found with given locator type:", e)
+            self.log.info("Element not found with given locator type:"+ str(e))
         return element
     
     def get_element(self, locator_value, locator_type="XPATH"):
@@ -35,7 +36,7 @@ class BasePage:
         try:
             element = self.wait_for_element(locator_value, locator_type)
         except Exception as e:
-            self.log.info(f"Element not found with given value {locator_value} ", e)
+            self.log.info(f"Element not found with given value {locator_value} "+ str(e))
             assert False
         return element
     
@@ -49,7 +50,7 @@ class BasePage:
             element = wait.until(EC.visibility_of_all_elements_located((getattr(By,locator_type), locator_value)))
             return element
         except Exception as e:
-            self.log.info("Element not found with given locator type:", e)
+            self.log.info("Element not found with given locator type:"+ e)
             pass
         return element
     
@@ -125,7 +126,7 @@ class BasePage:
             element.click()
             self.log.info(f"Clicked on  element with given value {locator_value}")
         except Exception as e:
-            self.log.info(f"Element cannot be clicked at: {locator_value} ", e)
+            self.log.info(f"Element cannot be clicked at {locator_value}: "+ str(e))
             assert False
 
     def send_text(self, text, locator_value, locator_type="XPATH"):
@@ -262,3 +263,17 @@ class BasePage:
         except Exception as e:
             print(f"An error occurred: {e}")
 
+    def get_dropdown_values_db(self,table):
+        connection_string = f'DRIVER=ODBC Driver 17 for SQL Server;SERVER=IB-PUNE-LAP-148\MSSQLSERVER2019;DATABASE=automationResults;UID=sa;PWD=server.123'
+        self.conn = pyodbc.connect(connection_string)
+        print("Connected to SQL Server successfully!")
+        try:
+            with self.conn.cursor() as connect:
+                connect.execute(f"select * from {table}")
+                list_value= connect.fetchall()
+                dd_val = [item[0] for item in list_value]
+                return dd_val                
+        except:
+            pass
+        finally:
+            self.conn.close()

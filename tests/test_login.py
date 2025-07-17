@@ -42,3 +42,13 @@ class TestLogin(TestBase):
          homePage_Obj= self.orangeHrm_obj.loginToHomePage(self.read_json['credential'])
          homePage_Obj.getSideBarElements("My Info")
          self.myInfoPage_obj.enter_user_info(read_properties('MONTH'),read_properties('YEAR'),read_properties('DAY'))
+
+    def test_fillInfoForm_new(self):
+         homePage_Obj= self.orangeHrm_obj.loginToHomePage(self.read_json['credential'])
+         homePage_Obj.getSideBarElements("My Info")
+         self.myInfoPage_obj.enter_user_info(read_properties('MONTH'),read_properties('YEAR'),read_properties('DAY'))     
+
+    def test_db_val(self):
+        values = self.orangeHrm_obj.get_dropdown_values_db("TestResult")
+        print(values)
+        print(len(values))
